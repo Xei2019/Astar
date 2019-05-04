@@ -4,25 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Astart
+
+namespace Asatr
 {
     class Program
     {
-        public class WayPoint
-        {
-            public (int X, int Y) Location { get; set; }
-            public float CostFromStart { get; set; } = float.MaxValue;
-            public float CostFromGoal { get; set; } = float.MaxValue;
-            public float TotalCost => CostFromStart + CostFromGoal;
-            public WayPoint Parent { get; set; }
-        }
-        public class WayPointComparer : IComparer<WayPoint>
-        {
-            public int Compare(WayPoint x, WayPoint y)
-            {
-                return x.TotalCost.CompareTo(y.TotalCost);
-            }
-        }
+       
+       
         static void Main(string[] args)
         {
             var map = new int[,] {
@@ -75,12 +63,12 @@ namespace Astart
         static WayPoint AStarSearch(int[,] map, (int X, int Y) start, (int X, int Y) goal)
         {
             var mapSize = (Width: map.GetLength(1), Height: map.GetLength(0));
-            var pointMap = new WayPoint[mapSize.Height, mapSize.Width];
+            var pointMap = new Asatr.WayPoint[mapSize.Height, mapSize.Width];
 
-            var openedContainer = new List<WayPoint>();
-            var closedContainer = new List<WayPoint>();
+            var openedContainer = new List<Asatr.WayPoint>();
+            var closedContainer = new List<Asatr.WayPoint>();
 
-            var startNode = new WayPoint
+            var startNode = new Asatr.WayPoint
             {
                 Location = start,
                 CostFromStart = 0f,
@@ -110,7 +98,7 @@ namespace Astart
 
                     var newCost = node.CostFromStart + CalculateDistance(node.Location, neighboringLocation);
                     var point = pointMap[neighboringLocation.Y, neighboringLocation.X]
-                        ?? new WayPoint
+                        ?? new Asatr.WayPoint
                         {
                             Location = neighboringLocation
                         };
@@ -138,7 +126,7 @@ namespace Astart
             return null;
         }
 
-        static IEnumerable<(int X, int Y)> FindNeighboringLocation(WayPoint currentPoint, (int Width, int Height) size)
+        static IEnumerable<(int X, int Y)> FindNeighboringLocation(Asatr.WayPoint currentPoint, (int Width, int Height) size)
         {
             for (var x = currentPoint.Location.X - 1; x <= currentPoint.Location.X + 1; x++)
                 for (var y = currentPoint.Location.Y - 1; y <= currentPoint.Location.Y + 1; y++)
